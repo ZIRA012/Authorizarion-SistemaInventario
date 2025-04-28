@@ -1,7 +1,7 @@
 # Proyecto de Gestión de Usuarios con Blazor y Microsoft Identity
 
 Este es un proyecto de gestión de usuarios utilizando Blazor WebAssembly, Microsoft Identity y SQL Server. Permite la creación y gestión de usuarios con roles específicos como "Admin" y "Manager", además de un sistema de autenticación basado en Identity de Microsoft.
-
+![Login y Creacion](./LoginInventario.jpg)
 ## Características
 
 - **Autenticación y autorización**: Implementación de autenticación usando Microsoft Identity y roles personalizados (Admin, Manager, User).
