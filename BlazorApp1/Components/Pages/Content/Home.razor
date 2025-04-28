@@ -1,0 +1,53 @@
+﻿
+@page "/app/home"
+@attribute [Authorize]
+<div class="container mt-3">
+    <h2 class="text-center">¿Cómo Funciona el Proyecto?</h2>
+    <p class="lead text-center bg-light p-3 rounded">
+        Este proyecto es una plataforma diseñada para facilitar la gestión de usuarios y sus roles dentro de un sistema de administración.
+        Aquí puedes crear, gestionar y asignar roles a los usuarios, con permisos específicos según el tipo de rol.
+    </p>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>1. Creación de Usuarios</h3>
+            <p class="bg-info p-3 rounded">
+                Los administradores pueden crear nuevos usuarios asignando roles específicos. Dependiendo del rol, los permisos de cada usuario variarán:
+                <ul>
+                    <li><strong>Usuario</strong>: Solo tiene acceso básico.</li>
+                    <li><strong>Manager</strong>: Puede gestionar otros usuarios pero no puede asignar roles de administrador.</li>
+                    <li><strong>Administrador</strong>: Tiene acceso completo a la plataforma.</li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-md-6">
+            <h3>2. Gestión de Roles</h3>
+            <p class="bg-warning p-3 rounded">
+                Los usuarios con el rol de <strong>Manager</strong> pueden gestionar usuarios, pero no pueden asignar o modificar el rol de <strong>Administrador</strong>.
+                Solo los <strong>Administradores</strong> pueden tener acceso completo a todas las funcionalidades del sistema.
+            </p>
+        </div>
+    </div>
+    <p class="text-center mt-4 bg-success text-white p-3 rounded">
+        Si eres un administrador, podrás ver todas las funcionalidades del sistema. Si eres un Manager, tendrás restricciones, y si eres un usuario normal, solo podrás acceder a funcionalidades básicas.
+    </p>
+
+    <!-- Tecnologías utilizadas -->
+    <div class="mt-5">
+        <h3 class="text-center">Tecnologías Utilizadas</h3>
+        <p class="bg-dark text-white p-3 rounded">
+            Este proyecto utiliza varias tecnologías avanzadas para gestionar de forma eficiente los roles y permisos de los usuarios:
+            <ul>
+                <li><strong>Identity de Microsoft</strong>: Utilizamos el sistema de autenticación y autorización de Identity de Microsoft para manejar la seguridad y roles de los usuarios. Este sistema permite verificar las claims de los usuarios y asignar roles como <strong>Admin</strong>, <strong>Manager</strong> o <strong>User</strong> para controlar el acceso a distintas partes de la aplicación.</li>
+                <li><strong>ASP.NET Core</strong>: Todo el backend está desarrollado con ASP.NET Core, lo que nos permite tener una aplicación robusta y eficiente.</li>
+                <li><strong>Blazor</strong>: Usamos Blazor para el frontend, lo que nos permite tener una aplicación interactiva y dinámica en el navegador sin necesidad de JavaScript.</li>
+                <li><strong>Azure</strong>: La aplicación está desplegada en la nube utilizando Microsoft Azure, lo que nos permite escalabilidad y seguridad.</li>
+                <li><strong>Políticas de Autorización</strong>: Implementamos políticas personalizadas para manejar el acceso a páginas según los roles de los usuarios. Esto asegura que solo los usuarios con permisos adecuados puedan realizar ciertas acciones.</li>
+            </ul>
+        </p>
+    </div>
+</div>
+
+
+
+
+    

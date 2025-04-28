@@ -1,0 +1,54 @@
+﻿
+
+<div class="nav-scrollable"  onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="NavContainer" style="border-radius: 24px;">
+
+        <div class="nav-item px-3 mb-2">
+            <h2 class="welcome-text">Bienvenido, @username</h2>
+        </div>
+
+        <style>
+            .welcome-text {
+                font-size: 20px; /* Tamaño de la letra más pequeña */
+                color: white; /* Color de texto blanco */
+            }
+        </style>
+        <div class="nav-item px-3 mb-2">
+            <NavLink class="nav-link text-white fs-5" href="/app/home">
+                <span class="bi bi-person-circle" aria-hidden="true"></span> Inicio
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3 mb-2">
+            <NavLink class="nav-link text-white fs-5" href="crear-usuario">
+                <span class="bi bi-gear-fill" aria-hidden="true"></span> Configurar Usuario
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <form action="Account/Logout" method="post" class="mb-2">
+                <AntiforgeryToken />
+                <button type="submit" class="nav-link fw-bold text-danger bg-transparent border-0">
+                    <i class="bi bi-box-arrow-right text-danger"></i> Salir
+                </button>
+            </form>
+        </div>
+    </nav>
+</div>
+
+
+    @code {
+        private string username;
+
+        protected override async Task OnInitializedAsync()
+        {
+            var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authenticationState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                // Obtener la claim "Name" directamente
+                username = user.FindFirst(c => c.Type == "Name")?.Value;
+            }
+        }
+    }

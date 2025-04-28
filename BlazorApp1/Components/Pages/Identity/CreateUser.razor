@@ -1,0 +1,159 @@
+﻿@page "/crear-usuario"
+@using BlazorApp1.Components.Layout
+@attribute [Authorize]
+@layout MainLayout
+
+
+<h3 class="text-black mb-4">Crear Nuevo Usuario</h3>
+
+@if(IsManager || IsAdmin)
+{
+    <EditForm Model="newUser" OnValidSubmit="HandleCreateUser" FormName="CrearUsuarioForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label class="form-label text-black">Nombre:</label>
+            <InputText class="form-control" @bind-Value="newUser.Name" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-black">Email:</label>
+            <InputText class="form-control" @bind-Value="newUser.Email" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label text-black">Contraseña</label>
+            <InputText class="form-control" @bind-Value="newUser.Password" type="password" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-black">Confirmar Contraseña:</label>
+            <InputText class="form-control" @bind-Value="newUser.ComfirmPassword" type="password" />
+        </div>
+
+
+        @if (IsAdmin)
+        {
+            <div class="mb-3">
+                <label class="form-label text-black">Rol:</label>
+                <InputSelect class="form-control" @bind-Value="newUser.Policy">
+                    <option value=@Policy.UserPolicy>Usuario</option>
+                    <option value=@Policy.ManagerPolicy>Manager</option>
+                    <option value=@Policy.AdminPolicy>Admin</option>
+                </InputSelect>
+            </div>
+        }
+        else
+        {
+            <div class="mb-3">
+                <label class="form-label text-black">Rol:</label>
+                <InputSelect class="form-control" @bind-Value="newUser.Policy">
+                    <option value=@Policy.UserPolicy>Usuario</option>
+                    <option value=@Policy.ManagerPolicy>Manager</option>
+                </InputSelect>
+            </div>
+        }
+
+
+
+        <button type="submit" class="btn btn-primary">Crear Usuario</button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <div class="alert @alertClass mt-3">
+            @message
+        </div>
+    }
+
+    @if (users.Any())
+    {
+        <h4 class="text-black mt-5">Usuarios Existentes</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in users)
+                {
+                    <tr>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td>@user.RoleName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <h1>Eres Usuario, Contacta a tu admin para cambiar o modificar usuarios</h1>
+}
+
+@code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
+    private List<Application.SI.DTO.Response.GetUserWithClaimResponseDTO> users = new();
+    private string message = "";
+    private string alertClass = "";
+
+    private bool IsUser = false;
+    private bool IsManager = false;
+    private bool IsAdmin = false;
+    private bool IsLoaded = false;
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateTask!;
+        var user = authState.User;
+
+        if (user.Identity is { IsAuthenticated: true })
+        {
+            var roleClaim = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+            if (roleClaim is not null)
+            {
+                var role = roleClaim.Value;
+
+                IsUser = role == "User";
+                IsManager = role == "Manager";
+                IsAdmin = role == "Admin";
+            }
+        }
+
+        if (IsAdmin || IsManager)
+        {
+            var result = await accountService.GetUsersWithClaimsAsync();
+            users = result.ToList();
+        }
+
+        IsLoaded = true;
+    }
+
+
+    [SupplyParameterFromForm]
+    private CreateUserRequestDTO newUser { get; set; } = new();
+
+
+    private async Task HandleCreateUser()
+    {
+        var result = await accountService.CreateUserAsync(newUser);
+
+        if (result.Flag)
+        {
+            message = "Usuario creado exitosamente.";
+            alertClass = "alert-success";
+            newUser = new(); // Limpiar el formulario
+        }
+        else
+        {
+            message = $"Error: {result.Message}";
+            alertClass = "alert-danger";
+        }
+    }
+}

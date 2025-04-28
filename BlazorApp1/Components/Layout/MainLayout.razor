@@ -1,0 +1,44 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="navbar">
+        <NavMenu />
+    </div>
+    <style>
+        .navbar {
+            background-color: transparent !important; /* Fondo gris oscuro */
+            /* O un color más claro si prefieres un fondo más suave */
+            /* background-color: #f8f9fa !important; */
+        }
+
+        .nav-link:hover {
+            color: #333 !important; /* Oscurece el texto cuando se pasa el mouse */
+            transition: color 0.3s ease; /* Efecto suave */
+        
+        }
+
+        .nav-scrollable {
+            background-color: dodgerblue; /* Fondo azul con opacidad */
+            border-radius: 24px;
+        }
+
+        .NavContainer{
+            background-color: transparent;
+        }
+        
+    </style>
+
+    <main>
+        
+
+        <article class="content px-0">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
