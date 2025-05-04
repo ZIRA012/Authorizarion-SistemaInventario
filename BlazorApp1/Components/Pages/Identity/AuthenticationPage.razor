@@ -1,14 +1,12 @@
 ﻿@page "/"
-@inject NavigationManager NavManager
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @code {
-    private AuthenticationState _authenticationState;
+    private AuthenticationState? _authenticationState;
 
     protected override async Task OnInitializedAsync()
     {
         _authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
+        
         // Verifica si el usuario está autenticado
         if (_authenticationState.User.Identity?.IsAuthenticated == true)
         {
@@ -33,27 +31,3 @@
 
 
 
-@* @page "/"
-
-@code {
-	[CascadingParameter]
-	public Task <AuthenticationState>? ClientAuthState { get; set; }
-
-	protected override async Task OnInitializedAsync()
-	{
-		try
-		{
-			await accountService.SetUpAsync();
-			if ((await ClientAuthState!).User.Identity!.IsAuthenticated == true)
-				NavManager.NavigateTo("app/home", false, true);
-			else
-				NavManager.NavigateTo("Account/login", false,true);
-		}
-		catch
-		{
-			NavManager.NavigateTo("Account/login", false, true);
-		}
-	}
-
-}
- *@
