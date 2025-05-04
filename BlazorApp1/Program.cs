@@ -1,5 +1,5 @@
 using BlazorApp1.Components;
-using Syncfusion.Blazor;
+//using Syncfusion.Blazor;
 using Infrastructure.SI.DependencyInjection;
 using Application.SI.DependencyInjection;
 using BlazorApp1.Components.Layout.Identity;
